@@ -58,7 +58,7 @@ test("examples are ranked by how well they fit the stage", () => {
 });
 
 test("middle-school examples stay short and avoid adult or living-arrangement presuppositions", () => {
-  const off = /宿舍|室友|住校|走读|接送|送饭|手机|微信|群里|零花钱|生活费|打工|兼职|恋爱|对象|喝酒|公司|领导|工资|房子|积蓄/;
+  const off = /宿舍|室友|住校|走读|接送|送饭|手机|微信|群里|零花钱|生活费|优秀线|打工|兼职|恋爱|对象|喝酒|公司|领导|工资|房子|积蓄/;
   for (const ax of axes) {
     for (const e of ax.examples.filter((x) => x.for === "middle")) {
       assert.ok(visibleLength(e.text) <= 100, `${ax.id}: middle example is long`);

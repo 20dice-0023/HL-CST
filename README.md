@@ -72,6 +72,7 @@ key 和全部记录只存在你的浏览器里；请求从浏览器直接发给�
 - `npm run serve`：本地服务器（不缓存，只听本机），等于 `node tools/serve.mjs 8000`
 - `node tools/mock-llm-server.mjs`：本地模拟的模型服务，不花钱走一遍正式流程。设置里选"其它 OpenAI 兼容服务"，接口地址填 `http://localhost:8787/v1`，key 随便填，模型填 `mock-large`
 - `npm run simulate`：让一个虚拟受试者做两轮并出报告（`tools/simulate.mjs`）。要用自己的 key，运行后在终端里粘贴，不显示也不保存；`npm run simulate -- --provider mock` 配合上面的模拟服务只测流程。结果写在 `sim-output/`，不进仓库
+- `npm run check-coder`：拿标准题的样例回答检查编码准不准，附拆解和不附拆解各编一遍（`tools/check-coder.mjs`）。默认用 DeepSeek，`-- --provider anthropic --model 模型名` 换 Claude，`-- --provider mock` 配合模拟服务只测流程。key 在终端里粘贴，结果写在 `sim-output/`
 - `npm run calibrate`：用模拟数据检查回避判定的门槛
 - `npm run vendor`：重新打包 Anthropic SDK（升级 SDK 之后）
 

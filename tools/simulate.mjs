@@ -12,9 +12,8 @@
 // 第一轮的回答很短、常常说一半；第二轮写得长、讲理由。是同一个人，脾气不变（见 PERSONA），
 // 这样能看出报告认不认得出来。报告照真实流程整理：两轮都算"看报告之前"做的。
 
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import process from "node:process";
-import { fileURLToPath } from "node:url";
 import { setUI, t } from "../src/i18n.js";
 import { emptyData } from "../src/store.js";
 import { ROLE_EFFORT, normalizeSettings } from "../src/settings.js";
@@ -40,9 +39,10 @@ import { buildReport } from "../src/analysis.js";
 import { setUsageListener } from "../src/llm.js";
 import { anthropicCall } from "../src/providers/anthropic.js";
 import { openaiCall } from "../src/providers/openai-compatible.js";
-import { extractJSON, splitPrompt } from "../src/text.js";
+import { extractJSON } from "../src/text.js";
 import { conform } from "../src/validate.js";
 import { REASONING_DIMS, REASONING_NONE } from "../src/reasoning.js";
+import { ROOT, askHidden, loadContentFromDisk, stamp } from "./lib.mjs";
 
 // ---------- 参数 ----------
 
@@ -53,25 +53,11 @@ const arg = (name, fallback) => {
 };
 const PROVIDER = arg("provider", "anthropic");
 const ROUNDS = Number(arg("rounds", "12"));
-const ROOT = fileURLToPath(new URL("..", import.meta.url));
-const OUT = `${ROOT}sim-output/${new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)}-${PROVIDER}`;
+const OUT = `${ROOT}sim-output/${stamp()}-${PROVIDER}`;
 
 // ---------- 内容 ----------
 
-const read = (p) => readFileSync(`${ROOT}content/zh/${p}`, "utf8");
-const axesFile = JSON.parse(read("axes.json"));
-const promptNames = ["writer", "auditor-questions", "coder", "probe", "analyst", "auditor-hypotheses", "auditor-recheck", "ping"];
-const content = {
-  locale: "zh",
-  axisTableVersion: axesFile.version,
-  axes: axesFile.axes,
-  axisIds: axesFile.axes.map((a) => a.id),
-  axisById: Object.fromEntries(axesFile.axes.map((a) => [a.id, a])),
-  packages: JSON.parse(read("packages.json")),
-  wordlists: JSON.parse(read("wordlists.json")),
-  ui: JSON.parse(read("ui.json")),
-  prompts: Object.fromEntries(promptNames.map((n) => [n, splitPrompt(read(`prompts/${n}.md`))])),
-};
+const content = loadContentFromDisk();
 setUI(content.ui);
 
 // ---------- 用哪家、哪几个模型 ----------
@@ -104,38 +90,6 @@ const SETUP = SETUPS[PROVIDER];
 if (!SETUP) {
   console.error(`不认识的 --provider：${PROVIDER}（可以用 anthropic、deepseek、mock）`);
   process.exit(1);
-}
-
-// 不回显地读一行（粘贴 key 用）。去掉终端可能夹带的粘贴标记和控制字符。
-function askHidden(prompt) {
-  return new Promise((resolve) => {
-    const stdin = process.stdin;
-    let buf = "";
-    const finish = () => {
-      stdin.setRawMode(false);
-      stdin.pause();
-      stdin.off("data", onData);
-      process.stdout.write("\n");
-      resolve(buf.replace(/\x1b\[[0-9;?]*[~A-Za-z]/g, "").replace(/[^\x21-\x7e]/g, ""));
-    };
-    const onData = (chunk) => {
-      for (const c of chunk) {
-        if (c === "\r" || c === "\n") return finish();
-        if (c === "\u0003") {
-          stdin.setRawMode(false);
-          process.stdout.write("\n");
-          process.exit(130);
-        }
-        if (c === "\u007f" || c === "\b") buf = buf.slice(0, -1);
-        else buf += c;
-      }
-    };
-    process.stdout.write(prompt);
-    stdin.setEncoding("utf8");
-    stdin.setRawMode(true);
-    stdin.resume();
-    stdin.on("data", onData);
-  });
 }
 
 async function ensureKey() {

@@ -9,6 +9,7 @@ import { auditorSameProvider, resolveTarget } from "./settings.js";
 import { DEFAULT_STAGE, packageText, rankExamples, stageInfo } from "./life-stage.js";
 import { SCHEMAS } from "./schemas.js";
 import { conform } from "./validate.js";
+import { standardCardText } from "./standard.js";
 
 // 行为有变化就改版本号：每一轮都记着，事后查问题时分得清是哪一版的代码。package.json 里的版本号跟着它走。
 export const APP_VERSION = "0.4.0";
@@ -353,6 +354,7 @@ export async function codeRound(ctx, round) {
     left: ax.left,
     right: ax.right,
     question: q.text,
+    card: standardCardText(ctx.content, q),
     answer: round.answer || "（空）",
     extra: extraText(round, { includeProbes: false }),
   };
@@ -372,6 +374,7 @@ export async function codeRoundAgain(ctx, round) {
     left: ax.left,
     right: ax.right,
     question: q.text,
+    card: standardCardText(ctx.content, q),
     answer: round.answer || "（空）",
     extra: extraText(round, { includeProbes: true }),
   };

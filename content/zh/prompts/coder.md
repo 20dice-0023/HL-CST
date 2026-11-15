@@ -25,6 +25,7 @@
 
 ===USER===
 题目：{{question}}
+{{card}}
 
 回答：{{answer}}
 {{extra}}
