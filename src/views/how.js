@@ -7,7 +7,8 @@ import { app, persist } from "../app.js";
 import { informedAt, now, reportUnlocked } from "../session.js";
 import { parseMarkdown } from "../markdown.js";
 
-export const DOCS = ["01-core-principles", "02-axes-v0", "03-output-spec", "04-repo-and-release", "changelog"];
+// 修订记录不放进网站：网站以门面为主，想看的人去仓库看（修订记录第 16 轮）。
+export const DOCS = ["01-core-principles", "02-axes-v0", "03-output-spec", "04-repo-and-release"];
 
 export function renderHow(view, name) {
   const doc = DOCS.includes(name) ? name : DOCS[0];
@@ -78,10 +79,10 @@ async function load(view, doc) {
 }
 
 // 链接：几份说明之间互相跳，留在网站里；外面的网址在新窗口打开；别的相对地址按 design/ 算。
-// 只放行 http(s)，别的（比如 javascript:）只显示文字。
+// 不在网站里显示的 .md（修订记录）只留文字，不链到原文件。只放行 http(s)，别的（比如 javascript:）只显示文字。
 function linkAttrs(href) {
   const m = href.match(/^(?:\.\/)?([\w.-]+)\.md(?:#.*)?$/);
-  if (m && DOCS.includes(m[1])) return { href: `#/how/${m[1]}` };
+  if (m) return DOCS.includes(m[1]) ? { href: `#/how/${m[1]}` } : null;
   if (href.startsWith("#")) return null; // 页内锚点和地址栏的路由冲突，不做成链接
   let url;
   try {

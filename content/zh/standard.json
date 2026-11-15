@@ -1,0 +1,223 @@
+{
+  "note": "标准题（修订记录第 16 轮）：一小批固定的题，事先把结构拆透，受试者答完，编码只需要把回答对到拆好的格子里。和例题分开放：不给出题模型当例子；正式轮次里整组出；先拿样例回答离线检查编码准不准，通过了才进正式轮次。设计见轴表第 9 节。",
+  "rules": [
+    "眼下做的是哪一边，lean 就是哪一边。\"不行再改\"\"再出现就改\"这类以后的打算，写进 flip_conditions，不改 lean。",
+    "眼下两边都不做，先确认一件事再选：说清了按什么结果选哪边，lean 和 deferral 都是 conditional，缺的写进 missing_info；没说清，lean 是 deferred，deferral 是 open。",
+    "想办法让两边都不吃亏，或者走题面没给的路，lean 是 other。",
+    "把决定交给别人：家里人、老师算\"上级\"，懂行的人算\"专家\"，等大家一起定算\"多数人\"，听对方的算\"对方\"。眼下照别人的意见做了，lean 按第一条算，deferred_to 照样记。",
+    "criteria 先用拆解里列的说法；回答里有拆解没列的标准，照回答的说法写。对不上的不硬塞。"
+  ],
+  "questions": [
+    {
+      "id": "S-A1-1",
+      "axis": "A1",
+      "carrier": "家务和居住",
+      "for": "any",
+      "text": "你最后一个出门，走到车站才想起来，好像没锁门，又好像锁了。回去看一眼要多走二十分钟，肯定会迟到；不回去，多半是锁了的，万一没锁也说不准会怎样。你会怎么做？",
+      "card": {
+        "left": "主动处理：现在就回去看；请家里人或邻居帮忙看一眼也算（代价更小的主动处理）。",
+        "right": "维持现状：不回去，照常走；\"办完事再回去看\"也算。",
+        "stake": "回去，肯定迟到；不回去，心里悬着，万一没锁也说不准会怎样。",
+        "gap": "家里有没有人、迟到有多要紧、平时锁门的习惯。",
+        "routes": [
+          "请别人帮忙看一眼 → left",
+          "先回想出门前做了什么，想不起来就回去 → conditional（缺的是\"到底锁没锁\"）",
+          "先去办事，办完早点回家 → right",
+          "迟到太久就不回去了，只迟到一点就回去 → conditional"
+        ],
+        "criteria": ["最坏会怎样", "没锁的可能", "迟到的代价", "麻烦程度"]
+      },
+      "samples": [
+        { "answer": "回去看一眼，迟到就迟到，门没锁可不是小事。", "expect": { "lean": "left", "deferral": "none", "deferred_to": [], "criteria": ["最坏会怎样"] } },
+        { "answer": "不回去了，我平时都会锁，这次多半也锁了。", "expect": { "lean": "right", "deferral": "none", "deferred_to": [], "criteria": ["没锁的可能"] } },
+        { "answer": "给家里人打个电话，请家里人回去时看一眼。", "expect": { "lean": "left", "deferral": "none", "deferred_to": [], "criteria": [] } },
+        { "answer": "先站着想想出门前做了什么，要是还想不起来就回去。", "expect": { "lean": "conditional", "deferral": "conditional", "deferred_to": [], "criteria": [] } },
+        { "answer": "先去办事，办完早点回家看看。", "expect": { "lean": "right", "deferral": "none", "deferred_to": [], "criteria": [] } }
+      ]
+    },
+    {
+      "id": "S-A2-1",
+      "axis": "A2",
+      "carrier": "休闲",
+      "for": "any",
+      "text": "你在象棋比赛里当裁判。规则写明：手碰到哪个子，就得走哪个子。一个小选手碰了一下马，马上说是不小心碰到的；这步非走马不可的话，基本就输了。对手看着你，怎么判由你定。你会怎么判？",
+      "card": {
+        "left": "按规定办：判必须走马。",
+        "right": "变通：让小选手换一步走；\"这次算了，下不为例\"也算。",
+        "stake": "照规则判，小选手因为一个失误输掉这盘；变通，对手吃亏，规则也有了例外。",
+        "gap": "以前有没有这样判过、对手怎么想、小选手是不是真的不小心。",
+        "routes": [
+          "问对手，对手同意就让重走 → conditional，deferred_to 写\"对方\"",
+          "让重走，赛后说清楚下不为例 → right",
+          "按规则判，赛后安慰小选手 → left",
+          "请别的裁判或组织者来定 → deferred，deferred_to 写\"上级\""
+        ],
+        "criteria": ["公平", "先例", "规则是否合理", "比赛的目的", "对方的处境"]
+      },
+      "samples": [
+        { "answer": "按规则判，必须走马，不然对另一位选手不公平。", "expect": { "lean": "left", "deferral": "none", "deferred_to": [], "criteria": ["公平"] } },
+        { "answer": "让小选手重新走，比赛是为了下棋，不是为了抓这种失误。", "expect": { "lean": "right", "deferral": "none", "deferred_to": [], "criteria": ["比赛的目的"] } },
+        { "answer": "问问对手，对手同意就让重走，不同意就按规则。", "expect": { "lean": "conditional", "deferral": "conditional", "deferred_to": ["对方"], "criteria": [] } },
+        { "answer": "按规则判，规矩一松，以后每个人都会说自己是不小心的。", "expect": { "lean": "left", "deferral": "none", "deferred_to": [], "criteria": ["先例"] } },
+        { "answer": "这次让重走，赛后跟大家说清楚，下不为例。", "expect": { "lean": "right", "deferral": "none", "deferred_to": [], "criteria": ["先例"] } }
+      ]
+    },
+    {
+      "id": "S-A3-1",
+      "axis": "A3",
+      "carrier": "休闲",
+      "for": "any",
+      "text": "你学打羽毛球有一阵了，教练坚持要你改掉用惯的握拍方式，说不改以后很难进步。你觉得现在打得挺顺手，改了反而别扭。下周开始练新握法，你不说，就按教练的来。你会怎么做？",
+      "card": {
+        "left": "按自己的判断：继续用原来的握法，或者跟教练说想保留。",
+        "right": "交给别人：照教练说的改（deferred_to 写\"专家\"）。",
+        "stake": "不说就默认照教练的改；改了短期打得别扭，不改可能真的卡住进步。",
+        "gap": "教练的说法对你适不适用、改了要多久才顺手、练球是为了比赛还是好玩。",
+        "routes": [
+          "先照新的练一阵，不行再说 → right，\"不行再说\"写进 flip_conditions",
+          "先跟教练谈谈为什么别扭，谈完再定 → deferred（没说谈完怎么选）",
+          "两种握法都练 → other",
+          "就是打着玩，顺手最重要 → left"
+        ],
+        "criteria": ["专业意见", "自己的感受", "改的代价", "以后能不能进步", "练球的目的"]
+      },
+      "samples": [
+        { "answer": "听教练的，教过那么多人，肯定比我懂。", "expect": { "lean": "right", "deferral": "none", "deferred_to": ["专家"], "criteria": ["专业意见"] } },
+        { "answer": "我就打着玩，顺手最重要，不改。", "expect": { "lean": "left", "deferral": "none", "deferred_to": [], "criteria": ["练球的目的"] } },
+        { "answer": "先照新的练两周，实在别扭再跟教练说。", "expect": { "lean": "right", "deferral": "none", "deferred_to": ["专家"], "criteria": [] } },
+        { "answer": "先跟教练说说我为什么觉得别扭，听听怎么说再定。", "expect": { "lean": "deferred", "deferral": "open", "deferred_to": [], "criteria": [] } },
+        { "answer": "两种握法都练着，比赛用顺手的那种。", "expect": { "lean": "other", "deferral": "none", "deferred_to": [], "criteria": [] } }
+      ]
+    },
+    {
+      "id": "S-A4-1",
+      "axis": "A4",
+      "carrier": "公共和社区",
+      "for": "any",
+      "text": "你常路过的路口有只流浪猫，这两天腿瘸了，路过的人都看到了，但没人管。联系救助站不难，只是得由你当联系人，以后跟进、找领养多半都会找你。你不出面，大家多半还是看看就走。你会怎么做？",
+      "card": {
+        "left": "接过来：联系救助站并当联系人，或者自己带去看。说了\"只管这一次\"也算接，范围记进 criteria（责任范围）。",
+        "right": "不沾手：不出面，照常路过。",
+        "stake": "不出面，猫多半没人管；出面，以后的事都会找你。",
+        "gap": "救助站会不会来、有没有别人也想管、你以后有没有时间。",
+        "routes": [
+          "转给保安、社区，自己不当联系人 → other，deferred_to 写\"其他\"",
+          "联系一次，说好只管这一次 → left",
+          "先看两天，还瘸就联系 → right，\"还瘸就联系\"写进 flip_conditions"
+        ],
+        "criteria": ["以后的麻烦", "猫的处境", "别人会不会管", "责任范围"]
+      },
+      "samples": [
+        { "answer": "联系救助站，当联系人也没什么，总不能看着它瘸着。", "expect": { "lean": "left", "deferral": "none", "deferred_to": [], "criteria": ["猫的处境"] } },
+        { "answer": "告诉门口保安一声，让保安去联系，我就不留名字了。", "expect": { "lean": "other", "deferral": "none", "deferred_to": ["其他"], "criteria": [] } },
+        { "answer": "联系一次可以，但我会说清楚只管这一次，后面的事请救助站跟。", "expect": { "lean": "left", "deferral": "none", "deferred_to": [], "criteria": ["责任范围"] } },
+        { "answer": "不管，流浪猫那么多，一个人管不过来。", "expect": { "lean": "right", "deferral": "none", "deferred_to": [], "criteria": ["以后的麻烦"] } },
+        { "answer": "先看两天，要是还瘸就联系。", "expect": { "lean": "right", "deferral": "none", "deferred_to": [], "criteria": [] } }
+      ]
+    },
+    {
+      "id": "S-A5-1",
+      "axis": "A5",
+      "carrier": "朋友和社交",
+      "for": "any",
+      "text": "一个朋友在大家面前说，某种零食吃了会致癌，说得很认真，大家都信了。你知道这是辟谣过好几次的旧说法。当场指出来，朋友会有点下不来台；不说，也没人知道你早就知道。你会怎么做？",
+      "card": {
+        "left": "说出来：告诉朋友这是谣言。当场说、私下说都算，方式记进 criteria（说的方式）。",
+        "right": "不说，或说得含糊：只说一句\"好像有争议\"、不点明是谣言，也算这一边。",
+        "stake": "不说，一群人接着信；说，朋友会难堪。",
+        "gap": "朋友会怎么反应、在场的有没有你不熟的人、这个说法会不会害到人。",
+        "routes": [
+          "私下告诉朋友，让朋友自己更正 → left",
+          "先看有没有别人指出来，没人说再私下讲 → right，\"没人说再讲\"写进 flip_conditions",
+          "当场说\"我好像看到过辟谣\"（点明了是谣言，只是语气软）→ left"
+        ],
+        "criteria": ["朋友的面子", "别人被误导", "说的方式", "关系", "事情大小", "对错"]
+      },
+      "samples": [
+        { "answer": "私下跟朋友说一声，让朋友自己去更正，不当着大家的面说。", "expect": { "lean": "left", "deferral": "none", "deferred_to": [], "criteria": ["朋友的面子", "说的方式"] } },
+        { "answer": "当场就说，这是谣言，错的就是错的。", "expect": { "lean": "left", "deferral": "none", "deferred_to": [], "criteria": ["对错"] } },
+        { "answer": "就说一句\"这个好像有争议\"，点到为止。", "expect": { "lean": "right", "deferral": "none", "deferred_to": [], "criteria": ["说的方式"] } },
+        { "answer": "不说了，一句零食的事，没那么严重。", "expect": { "lean": "right", "deferral": "none", "deferred_to": [], "criteria": ["事情大小"] } },
+        { "answer": "先看看有没有别人指出来，没人说我再私下告诉朋友。", "expect": { "lean": "right", "deferral": "none", "deferred_to": [], "criteria": [] } }
+      ]
+    },
+    {
+      "id": "S-A6-1",
+      "axis": "A6",
+      "carrier": "工作或学习",
+      "for": "any",
+      "text": "你给自己定了每天练半小时字的计划，已经坚持了五十天，一天没断。最近你觉得这种练法没什么长进，想换个法子；可一换就得从头开始，前面的功夫也像白费了。你会怎么做？",
+      "card": {
+        "left": "坚持原来的：照原来的练法继续。",
+        "right": "调整：换新练法，接受从头开始。",
+        "stake": "坚持，可能一直没长进；换，五十天像是白费，新法子也不一定更好。",
+        "gap": "新法子是不是真的更好、\"没长进\"是自己的感觉还是别人说的、练字是为了什么。",
+        "routes": [
+          "原来的照做，另外加新练法 → other",
+          "再练一阵，还没长进就换 → left，\"还没长进就换\"写进 flip_conditions",
+          "问老师或懂的人，按对方说的办 → conditional，deferred_to 写\"专家\""
+        ],
+        "criteria": ["已经投入的", "有没有长进", "连续记录", "换的代价"]
+      },
+      "samples": [
+        { "answer": "换，练字是为了写好，不是为了打卡好看。", "expect": { "lean": "right", "deferral": "none", "deferred_to": [], "criteria": ["有没有长进"] } },
+        { "answer": "五十天了，断了太可惜，接着练。", "expect": { "lean": "left", "deferral": "none", "deferred_to": [], "criteria": ["已经投入的"] } },
+        { "answer": "原来的照样练，另外每天再试试新练法。", "expect": { "lean": "other", "deferral": "none", "deferred_to": [], "criteria": [] } },
+        { "answer": "再坚持两周，还是没长进就换。", "expect": { "lean": "left", "deferral": "none", "deferred_to": [], "criteria": ["有没有长进"] } },
+        { "answer": "先问问书法老师，老师说换我就换。", "expect": { "lean": "conditional", "deferral": "conditional", "deferred_to": ["专家"], "criteria": [] } }
+      ]
+    },
+    {
+      "id": "S-A7-1",
+      "axis": "A7",
+      "carrier": "钱",
+      "for": "any",
+      "text": "你排了一个小时队，想买一款限量的周边，轮到你时只剩最后一个。排在你后面的人说，想买来送给住院的弟弟当生日礼物，问你能不能让一让。店员在等你结账。你会怎么做？",
+      "card": {
+        "left": "顾自己：自己买下。",
+        "right": "顾别人：让给对方。让出去但要对方补点什么，也算这一边，补偿记进 criteria。",
+        "stake": "不出声就是你结账；让出去，排的一小时就白排了。",
+        "gap": "对方说的是不是真的、还会不会补货、你有多想要。",
+        "routes": [
+          "问店员能不能再调一个 → other（想让两边都不吃亏）",
+          "对方能证明是真的就让 → conditional，missing_info 写\"是不是真的\"",
+          "让给对方，请对方以后有货告诉自己 → right"
+        ],
+        "criteria": ["先来后到", "谁更需要", "是不是真的", "自己有多想要"]
+      },
+      "samples": [
+        { "answer": "我也排了一个小时，先来后到，自己买。", "expect": { "lean": "left", "deferral": "none", "deferred_to": [], "criteria": ["先来后到"] } },
+        { "answer": "让给对方吧，送给住院的弟弟比我自己留着更有意义。", "expect": { "lean": "right", "deferral": "none", "deferred_to": [], "criteria": ["谁更需要"] } },
+        { "answer": "问问店员能不能再调一个来，这样谁都不用让。", "expect": { "lean": "other", "deferral": "none", "deferred_to": [], "criteria": [] } },
+        { "answer": "对方要是能给我看看住院的证明，我就让。", "expect": { "lean": "conditional", "deferral": "conditional", "deferred_to": [], "criteria": ["是不是真的"] } },
+        { "answer": "让给对方，留个联系方式，下次有货请对方告诉我。", "expect": { "lean": "right", "deferral": "none", "deferred_to": [], "criteria": [] } }
+      ]
+    },
+    {
+      "id": "S-A8-1",
+      "axis": "A8",
+      "carrier": "休闲",
+      "for": "any",
+      "text": "下周要拍集体照，你打算去剪个头。常去的那家剪得不好不坏，稳稳的；新开的一家网上评价两极，剪好了很出彩，剪砸了就得顶着拍照。你去哪家？",
+      "card": {
+        "left": "求稳：去常去的那家。",
+        "right": "搏一把：去新开的那家。",
+        "stake": "稳的那边结果一般；搏的那边可能出彩，也可能顶着剪砸的头拍照。",
+        "gap": "新店手艺到底怎样、集体照有多要紧、剪砸了能不能补救。",
+        "routes": [
+          "拍照前去老店，拍完再试新店 → left（眼下选的是稳的）",
+          "先看差评说的是什么再定 → conditional",
+          "自己剪、找别的店 → other"
+        ],
+        "criteria": ["集体照重不重要", "最坏会怎样", "评价靠不靠谱", "想不想变样"]
+      },
+      "samples": [
+        { "answer": "去常去的那家，拍集体照又不是选美，稳一点好。", "expect": { "lean": "left", "deferral": "none", "deferred_to": [], "criteria": ["集体照重不重要"] } },
+        { "answer": "去新的，剪砸了也就难看几天，万一剪得好呢。", "expect": { "lean": "right", "deferral": "none", "deferred_to": [], "criteria": ["最坏会怎样"] } },
+        { "answer": "看看差评说的是什么，要是只是嫌贵就去新的。", "expect": { "lean": "conditional", "deferral": "conditional", "deferred_to": [], "criteria": ["评价靠不靠谱"] } },
+        { "answer": "拍照前还是去老地方，拍完照再去新店试试。", "expect": { "lean": "left", "deferral": "none", "deferred_to": [], "criteria": [] } },
+        { "answer": "先不定，拍照前一天再说。", "expect": { "lean": "deferred", "deferral": "open", "deferred_to": [], "criteria": [] } }
+      ]
+    }
+  ]
+}

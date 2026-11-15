@@ -407,8 +407,7 @@
       "01-core-principles": "核心原则",
       "02-axes-v0": "题目怎么分类（轴表）",
       "03-output-spec": "报告怎么写（输出规格）",
-      "04-repo-and-release": "仓库与发布",
-      "changelog": "修订记录"
+      "04-repo-and-release": "仓库与发布"
     }
   },
   "error": {
