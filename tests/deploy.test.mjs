@@ -32,7 +32,7 @@ test("the changelog, tests, tools, archive and project files stay off the site",
 
 test("wrangler.jsonc deploys the repository root as static files, with one fixed address", () => {
   const config = JSON.parse(read("wrangler.jsonc").replace(/^\s*\/\/.*$/gm, ""));
-  assert.equal(config.name, "hl-cst", "must match the Worker connected in Cloudflare");
+  assert.equal(config.name, "alexz", "must match the Worker connected in Cloudflare (alexz.hl-cst.workers.dev)");
   assert.equal(config.assets.directory, ".");
   assert.equal(config.main, undefined, "no Worker script: static files only");
   assert.equal(config.preview_urls, false);

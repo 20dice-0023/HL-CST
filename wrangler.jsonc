@@ -2,7 +2,8 @@
 // 推到 main 以后，Cloudflare 按这份配置把网站部署出去。原来仓库里没有这份文件，Cloudflare 每次构建都临时自动生成一份。
 // 网站是纯静态的：没有 Worker 脚本，只有静态文件；哪些文件不上传，见 .assetsignore；响应头见 _headers。
 {
-  "name": "hl-cst",
+  // 要和 Cloudflare 控制台里连着仓库的那个 Worker 同名（网址是 alexz.hl-cst.workers.dev：Worker 名.账号子域名）。
+  "name": "alexz",
   "compatibility_date": "2026-11-13",
   "assets": {
     "directory": "."
