@@ -93,3 +93,14 @@ export function parseImport(text) {
 export function clearAll() {
   localStorage.removeItem(DATA_KEY);
 }
+
+/** 忘掉这台设备上的 key：两个存储里的都删（记住的放在 localStorage，没记住的放在 sessionStorage）。 */
+export function forgetSecrets() {
+  localStorage.removeItem(SECRETS_KEY);
+  sessionStorage.removeItem(SECRETS_KEY);
+}
+
+/** 删掉服务商设置（选了哪家、哪个模型、接口地址）。显示设置（亮暗、字号）不在这里。 */
+export function clearSettings() {
+  localStorage.removeItem(SETTINGS_KEY);
+}

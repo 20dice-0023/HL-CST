@@ -39,7 +39,7 @@ const fail = (msg) => {
 const SETUPS = {
   deepseek: { id: "deepseek", model: "deepseek-flash", keyName: "DEEPSEEK_API_KEY", label: "DeepSeek" },
   anthropic: { id: "anthropic", model: "claude-haiku-5-5", keyName: "ANTHROPIC_API_KEY", label: "Claude" },
-  mock: { id: "custom", model: "mock-large", key: "mock", baseURL: "http://localhost:8787/v1", label: "模拟服务" },
+  mock: { id: "custom", model: "mock-large", key: "mock", baseURL: "http://127.0.0.1:8787/v1", label: "模拟服务" },
 };
 const PROVIDER = arg("provider", "deepseek");
 const SETUP = SETUPS[PROVIDER] ?? fail(`不认识的 --provider：${PROVIDER}（可以用 deepseek、anthropic、mock）`);

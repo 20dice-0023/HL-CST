@@ -3,10 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- 只允许本站脚本；请求只能发往 https 服务商或本机的本地模型。key 不会被发到别处。 -->
+    <!-- 只允许本站脚本；请求只能发往 https 服务商或本机的本地模型。key 不会被发到别处。
+         Trusted Types：任何把文字当网页代码插进页面的写法（innerHTML 之类）都会被浏览器直接拒绝，"只用文本节点"由浏览器强制执行。
+         托管时 _headers 里还有一份响应头的 CSP，两边要保持一致（tests/headers.test.mjs 会查）。 -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https: http://localhost:* http://127.0.0.1:*; base-uri 'none'; form-action 'none'; object-src 'none'"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https: http://localhost:* http://127.0.0.1:*; base-uri 'none'; form-action 'none'; object-src 'none'; require-trusted-types-for 'script'; trusted-types 'none'"
     />
     <meta name="referrer" content="no-referrer" />
     <title>HL-CST · 半明半暗里的选择与转念</title>

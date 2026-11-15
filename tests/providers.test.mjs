@@ -6,6 +6,7 @@ import { normalizeSettings, resolveTarget } from "../src/settings.js";
 import { openaiCall } from "../src/providers/openai-compatible.js";
 import { anthropicCall } from "../src/providers/anthropic.js";
 import { APP_VERSION } from "../src/session.js";
+import { redactSecrets } from "../src/errors.js";
 
 const secrets = { keys: { deepseek: "test-key", openai: "test-key", anthropic: "test-key" } };
 const deepseekOnly = normalizeSettings({ main: { provider: "deepseek", model: "deepseek-flash" }, auditor: { mode: "same", model: "" } });
@@ -118,4 +119,28 @@ test("a provider that never answers ends in a timeout error, not an endless wait
 test("package.json carries the same version the sessions record", () => {
   const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
   assert.equal(pkg.version, APP_VERSION);
+});
+
+test("OpenAI, Gemini and DeepSeek always use their official address, even if an old one was stored", () => {
+  const stale = normalizeSettings({ main: { provider: "deepseek", model: "deepseek-flash", baseURL: "https://evil.example/v1" }, auditor: { mode: "same", model: "" } });
+  assert.equal(resolveTarget(stale, secrets, "writer").baseURL, "https://api.deepseek.com");
+  const custom = normalizeSettings({ main: { provider: "custom", model: "m", baseURL: "https://my.example/v1/" }, auditor: { mode: "same", model: "" } });
+  assert.equal(resolveTarget(custom, { keys: { custom: "k" } }, "writer").baseURL, "https://my.example/v1");
+});
+
+test("a provider error that echoes the key never shows it", async () => {
+  const key = "sk-test-0123456789abcdef";
+  assert.equal(redactSecrets(`bad key ${key}, header Bearer ${key}`, key), "bad key ***, header Bearer ***");
+  assert.equal(redactSecrets("AIzaSyA1234567890abcdefghijklmnop and sk-proj-abcdefgh123", ""), "*** and ***");
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (_url, init) =>
+    new Response(JSON.stringify({ error: { message: `bad request for key ${init.headers.Authorization}` } }), { status: 400 });
+  try {
+    await assert.rejects(
+      openaiCall({ baseURL: "http://stub.local/v1", apiKey: key, model: "m", system: "s", user: "u", schema: { type: "object" }, jsonMode: "none" }),
+      (e) => e.kind === "bad_request" && !e.message.includes(key) && e.message.includes("***"),
+    );
+  } finally {
+    globalThis.fetch = realFetch;
+  }
 });

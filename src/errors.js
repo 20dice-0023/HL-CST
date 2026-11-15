@@ -13,3 +13,13 @@ export class LLMError extends Error {
     this.extra = extra;
   }
 }
+
+/**
+ * 服务商的报错可能原样带回 key（多半是自定义的服务）。显示到屏幕、写进文件之前，
+ * 把这次用的 key 和几种常见格式都换成 ***（安全审查第 4 条，修订记录第 18 轮）。
+ */
+export function redactSecrets(text, key) {
+  let s = String(text ?? "");
+  if (key && key.length >= 8) s = s.split(key).join("***");
+  return s.replace(/\b(?:sk-[A-Za-z0-9_-]{8,}|AIza[0-9A-Za-z_-]{20,})/g, "***").replace(/Bearer\s+\S+/gi, "Bearer ***");
+}

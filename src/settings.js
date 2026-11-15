@@ -123,6 +123,14 @@ export function normalizeSettings(saved) {
   };
 }
 
+/**
+ * 请求发往的地址。只有能改地址的服务商（本地模型、其它兼容服务）才用设置里存的；
+ * OpenAI、Gemini、DeepSeek 一律用官方地址，免得哪里留下的旧地址把它们的 key 带走（安全审查第 3 条）。
+ */
+export function endpointOf(p, baseURL) {
+  return ((p.editableBaseURL ? baseURL : "") || p.baseURL || "").trim().replace(/\/+$/, "");
+}
+
 /** 某种调用实际要用的服务商、模型、地址和 key。 */
 export function resolveTarget(settings, secrets, role) {
   const which = ROLE_TARGET[role] ?? "main";
@@ -147,7 +155,7 @@ export function resolveTarget(settings, secrets, role) {
     providerId,
     kind: p.kind,
     model: (model ?? "").trim(),
-    baseURL: (baseURL || p.baseURL || "").trim().replace(/\/+$/, ""),
+    baseURL: endpointOf(p, baseURL),
     apiKey: (secrets?.keys?.[providerId] ?? "").trim(),
     needsKey: p.needsKey,
     jsonMode: p.jsonMode,

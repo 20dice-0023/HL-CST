@@ -1,7 +1,8 @@
 import { download, h, pickFile } from "../dom.js";
 import { t } from "../i18n.js";
-import { app, confirmButton, persist } from "../app.js";
-import { clearAll, emptyData, exportData, parseImport } from "../store.js";
+import { app, persist } from "../app.js";
+import { clearAll, clearSettings, emptyData, exportData, forgetSecrets, parseImport } from "../store.js";
+import { normalizeSettings } from "../settings.js";
 
 // 导出、导入、删除全部记录（输出规格 1.10）。导出的文件不含 key。
 export function dataTools(onChange) {
@@ -31,12 +32,32 @@ export function dataTools(onChange) {
       h("button", { type: "button", class: "ghost small", onClick: () => msg.replaceChildren() }, t("common.cancel")),
     );
   };
-  const deleteAll = () => {
+  // 删除全部记录时问一句要不要连 key 和服务商设置一起删（安全审查第 5 条）：原来只删记录，key 还留在这台设备上。
+  const deleteAll = (alsoKeys) => {
     clearAll();
     app.data = emptyData();
     persist();
+    if (alsoKeys) {
+      forgetSecrets();
+      clearSettings();
+      app.secrets = { keys: {} };
+      app.settings = normalizeSettings(null);
+    }
     onChange?.();
   };
+  const deleteWrap = h("span", { class: "confirm" });
+  const resetDelete = () => deleteWrap.replaceChildren(deleteButton);
+  const askDelete = () => {
+    const alsoKeys = h("input", { type: "checkbox" });
+    deleteWrap.replaceChildren(
+      h("span", { class: "confirm-q" }, t("report.s10.deleteConfirm")),
+      h("label", { class: "check" }, alsoKeys, t("report.s10.deleteSecrets")),
+      h("button", { type: "button", class: "danger small", onClick: () => { const both = alsoKeys.checked; resetDelete(); deleteAll(both); } }, t("common.confirm")),
+      h("button", { type: "button", class: "ghost small", onClick: resetDelete }, t("common.cancel")),
+    );
+  };
+  const deleteButton = h("button", { type: "button", class: "danger-outline", onClick: askDelete }, t("report.s10.delete"));
+  deleteWrap.append(deleteButton);
   return h(
     "div",
     { class: "data-tools" },
@@ -46,7 +67,7 @@ export function dataTools(onChange) {
       { class: "actions" },
       h("button", { type: "button", class: "ghost", onClick: exportAll }, t("report.s10.export")),
       h("button", { type: "button", class: "ghost", onClick: importFile }, t("report.s10.import")),
-      confirmButton(t("report.s10.delete"), t("report.s10.deleteConfirm"), deleteAll, "danger-outline"),
+      deleteWrap,
     ),
     msg,
   );

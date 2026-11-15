@@ -1,7 +1,7 @@
 // Claude：通过官方 Anthropic SDK（vendor/ 里打包好的浏览器版本）直接从浏览器调用。
 
 import Anthropic from "../../vendor/anthropic-sdk.js";
-import { LLMError } from "../errors.js";
+import { LLMError, redactSecrets } from "../errors.js";
 
 // 这些模型支持服务端拒答回退：被安全分类器误拦时，由 Anthropic 推荐的模型接着答。
 const FALLBACK_MODELS = new Set(["claude-opus-5-5", "claude-sonnet-5-5", "claude-opus-5", "claude-fable-5-2", "claude-fable-5-1"]);
@@ -14,17 +14,17 @@ const EFFORT_MODELS = /^claude-(opus|sonnet|haiku|fable|mythos)-5|^claude-opus-4
 const BASE_URL = "https://api.anthropic.com";
 const client = (apiKey) => new Anthropic({ apiKey, authToken: null, baseURL: BASE_URL, dangerouslyAllowBrowser: true });
 
-function mapError(e) {
+function mapError(e, apiKey) {
   if (e instanceof LLMError) return e;
-  if (e instanceof Anthropic.AuthenticationError || e instanceof Anthropic.PermissionDeniedError) return new LLMError("auth", e.message);
-  if (e instanceof Anthropic.RateLimitError) return new LLMError("rate", e.message);
-  if (e instanceof Anthropic.NotFoundError) return new LLMError("not_found", e.message);
-  if (e instanceof Anthropic.BadRequestError) return new LLMError("bad_request", e.message);
-  if (e instanceof Anthropic.APIConnectionTimeoutError) return new LLMError("timeout", e.message); // 是 APIConnectionError 的子类，要先判断
-  if (e instanceof Anthropic.APIConnectionError) return new LLMError("network", e.message);
-  if (e instanceof Anthropic.InternalServerError) return new LLMError("server", e.message);
-  if (e instanceof Anthropic.APIError) return new LLMError("unknown", e.message);
-  return new LLMError("unknown", e?.message ?? String(e));
+  const message = redactSecrets(e?.message ?? String(e), apiKey);
+  if (e instanceof Anthropic.AuthenticationError || e instanceof Anthropic.PermissionDeniedError) return new LLMError("auth", message);
+  if (e instanceof Anthropic.RateLimitError) return new LLMError("rate", message);
+  if (e instanceof Anthropic.NotFoundError) return new LLMError("not_found", message);
+  if (e instanceof Anthropic.BadRequestError) return new LLMError("bad_request", message);
+  if (e instanceof Anthropic.APIConnectionTimeoutError) return new LLMError("timeout", message); // 是 APIConnectionError 的子类，要先判断
+  if (e instanceof Anthropic.APIConnectionError) return new LLMError("network", message);
+  if (e instanceof Anthropic.InternalServerError) return new LLMError("server", message);
+  return new LLMError("unknown", message);
 }
 
 /** 一次结构化输出调用，返回模型的原始文本和实际作答的模型名。 */
@@ -53,7 +53,7 @@ export async function anthropicCall({ apiKey, model, system, user, schema, effor
       .join("");
     return { text, model: res.model, usage: res.usage };
   } catch (e) {
-    throw mapError(e);
+    throw mapError(e, apiKey);
   }
 }
 
@@ -63,6 +63,6 @@ export async function anthropicListModels(apiKey) {
     for await (const m of client(apiKey).models.list()) ids.push(m.id);
     return ids;
   } catch (e) {
-    throw mapError(e);
+    throw mapError(e, apiKey);
   }
 }

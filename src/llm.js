@@ -4,7 +4,7 @@
 import { anthropicCall, anthropicListModels } from "./providers/anthropic.js";
 import { openaiCall, openaiListModels } from "./providers/openai-compatible.js";
 import { demoRespond } from "./providers/demo.js";
-import { PROVIDERS, resolveTarget } from "./settings.js";
+import { PROVIDERS, endpointOf, resolveTarget } from "./settings.js";
 import { extractJSON, fill } from "./text.js";
 import { LLMError } from "./errors.js";
 import { SCHEMAS } from "./schemas.js";
@@ -104,5 +104,5 @@ export async function listModels(providerId, { apiKey, baseURL }) {
     const ids = await anthropicListModels(apiKey);
     return [...new Set([...p.curatedModels, ...ids])];
   }
-  return openaiListModels({ baseURL: (baseURL || p.baseURL || "").replace(/\/+$/, ""), apiKey });
+  return openaiListModels({ baseURL: endpointOf(p, baseURL), apiKey });
 }

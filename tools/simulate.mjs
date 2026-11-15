@@ -81,7 +81,7 @@ const SETUPS = {
   mock: {
     id: "custom",
     key: "mock",
-    baseURL: "http://localhost:8787/v1",
+    baseURL: "http://127.0.0.1:8787/v1",
     rotation: ["mock-large", "mock-small", "mock-subject"],
     report: { main: "mock-large", auditor: "mock-small" },
   },

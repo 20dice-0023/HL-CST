@@ -6,7 +6,7 @@
   },
   "nav": { "home": "首页", "settings": "设置", "history": "我的记录" },
   "contact": {
-    "body": "不论玩得开不开心，都可以在这个邮箱上发一发你的感受；格式随意，就当隔空发QQ了。",
+    "body": "不论玩得怎样，都可以对这个邮箱说一说你的感受；格式随意，就当隔空发QQ了。",
     "email": "alexz_hlcst@163.com"
   },
   "common": {
@@ -23,12 +23,12 @@
     "reportLocked": "报告要做满 {n} 轮、一共答满 {g} 组才能看。你已经做了 {done} 轮、答了 {answered} 组。"
   },
   "home": {
-    "intro": "十来组小难题，每组挑一道来答。最后你会拿到一份关于自己怎样做判断的描述：有依据，也写明哪里可能看错。",
+    "intro": "这里有十来组跟生活有关的小难题，你可以每组挑一道来答。最后，你会拿到一份关于自己怎样做判断的描述：会有依据，也写明哪里可能会看错。",
     "start": "开始",
     "resume": "接着做（第 {round} 组）",
     "next": "开始第 {n} 轮",
     "demo": "试玩（不需要 key）",
-    "demoNote": "试玩用的是预置的示例题，报告由规则拼出来，只用来看流程。",
+    "demoNote": "试玩用的是预置的示例题，报告由内置规则生成。",
     "needSettings": "正式开始前，先在设置里选服务商、填 key。",
     "goSettings": "去设置",
     "report": "看报告",
@@ -43,6 +43,7 @@
     "apiKey": "API key",
     "apiKeyHint": "只存在这台设备的浏览器里，请求直接发给服务商。",
     "baseURL": "接口地址",
+    "baseURLWarning": "这个地址会收到你填的 key，以及全部题目和你的回答。只填你信得过的服务商在官网上给出的地址。",
     "model": "模型",
     "fetchModels": "获取模型列表",
     "fetchingModels": "正在获取模型列表……",
@@ -54,6 +55,10 @@
     "auditorSeparate": "用另一家",
     "auditorSameModelWarn": "审计员和出题用的是同一个模型，独立性会弱一些，建议换一个。",
     "remember": "在这台设备上记住 key（不勾选的话，关掉页面就忘掉）",
+    "rememberHint": "如果这是学校机房或者别人也会用的电脑，别勾这一项。",
+    "forget": "忘掉这台设备上的 key",
+    "forgetConfirm": "这台设备上存的 key 都会删掉，以后要用得重新填。确定吗？",
+    "forgotten": "这台设备上的 key 已经删掉了。",
     "test": "测试连接",
     "testing": "正在连接服务商……",
     "testOk": "连接正常（{who}）",
@@ -352,6 +357,7 @@
       "import": "导入记录",
       "delete": "删除全部记录",
       "deleteConfirm": "确定删除这台设备上的全部记录吗？删除后不能恢复。",
+      "deleteSecrets": "连这台设备上的 key 和服务商设置一起删掉",
       "imported": "已导入。",
       "importConfirm": "这台设备上已有 {have} 条记录，导入会把它们全部换成文件里的 {incoming} 条，换掉的找不回来。确定导入吗？",
       "importFailed": "导入失败：文件格式不对。"

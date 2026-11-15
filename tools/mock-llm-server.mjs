@@ -1,6 +1,6 @@
 // 本地模拟的 OpenAI 兼容服务：不花钱地走一遍真实的请求路径（设置 → 测试连接 → 出题 → 报告）。
 // 运行：node tools/mock-llm-server.mjs [端口，默认 8787]
-// 然后在设置里选"其它 OpenAI 兼容服务"，接口地址填 http://localhost:8787/v1 ，key 随便填，模型填 mock-large。
+// 然后在设置里选"其它 OpenAI 兼容服务"，接口地址填 http://127.0.0.1:8787/v1 ，key 随便填，模型填 mock-large。
 // 返回的内容都是占位文字，只用来测流程。
 
 import http from "node:http";
@@ -133,4 +133,5 @@ const server = http.createServer((req, res) => {
   res.end();
 });
 
-server.listen(PORT, () => console.log(`mock LLM server on http://localhost:${PORT}/v1`));
+// 只听本机，和 serve.mjs 一样：局域网里的设备连不上（安全审查第 7 条）。
+server.listen(PORT, "127.0.0.1", () => console.log(`mock LLM server on http://127.0.0.1:${PORT}/v1`));

@@ -2,7 +2,7 @@
 
 Half-Light Choices, Second Thoughts · 半明半暗里的选择与转念
 
-十来组小难题，每组挑一道来答。最后你会拿到一份关于自己怎样做判断的描述：有依据，也写明哪里可能看错。
+这里有十来组跟生活有关的小难题，你可以每组挑一道来答。最后，你会拿到一份关于自己怎样做判断的描述：会有依据，也写明哪里可能会看错。
 
 > 状态：v0 原型。可以试玩，也可以接上自己的 API key 正式做。回避判定的统计门槛已经用模拟数据校准过一次：一轮基本只会显示"数据不够"，要攒几轮才认得出回避；还需要真实数据再看。
 
@@ -10,8 +10,8 @@ Half-Light Choices, Second Thoughts · 半明半暗里的选择与转念
 
 ## 怎么开始
 
-- **本地运行**：下载仓库，在根目录运行 `node tools/serve.mjs`（没装 Node 的话用 `python -m http.server 8000 --bind 127.0.0.1`），再打开 http://localhost:8000 。直接双击 `index.html` 打不开，因为浏览器不允许网页读取本地文件。
-- **试玩**：首页点"试玩"。不需要 key，题目是预置的示例，报告由规则拼出来，只用来看流程。
+- **本地运行**：下载仓库，在根目录运行 `node tools/serve.mjs`（没装 Node 的话用 `python -m http.server 8000 --bind 127.0.0.1`；它会列出目录内容，也不检查 Host，目录里放着不公开的材料时别用），再打开 http://localhost:8000 。直接双击 `index.html` 打不开，因为浏览器不允许网页读取本地文件。
+- **试玩**：首页点"试玩"。不需要 key，用的是预置的示例题，报告由内置规则生成。
 - **正式做**：在"设置"里选服务商、填 key、选模型。报告要做满 3 轮、一共答满 24 组才能看（每轮十来组），之前做的都会存着。
 
 ## 用哪家的 key
@@ -35,7 +35,7 @@ key 和全部记录只存在你的浏览器里；请求从浏览器直接发给�
 
 ## 联系
 
-不论玩得开不开心，都可以在这个邮箱上发一发你的感受；格式随意，就当隔空发QQ了。
+不论玩得怎样，都可以对这个邮箱说一说你的感受；格式随意，就当隔空发QQ了。
 
 `alexz_hlcst@163.com`
 
@@ -70,7 +70,7 @@ key 和全部记录只存在你的浏览器里；请求从浏览器直接发给�
 - `npm install`
 - `npm test`：单元测试
 - `npm run serve`：本地服务器（不缓存，只听本机），等于 `node tools/serve.mjs 8000`
-- `node tools/mock-llm-server.mjs`：本地模拟的模型服务，不花钱走一遍正式流程。设置里选"其它 OpenAI 兼容服务"，接口地址填 `http://localhost:8787/v1`，key 随便填，模型填 `mock-large`
+- `node tools/mock-llm-server.mjs`：本地模拟的模型服务，不花钱走一遍正式流程。设置里选"其它 OpenAI 兼容服务"，接口地址填 `http://127.0.0.1:8787/v1`，key 随便填，模型填 `mock-large`
 - `npm run simulate`：让一个虚拟受试者做两轮并出报告（`tools/simulate.mjs`）。要用自己的 key，运行后在终端里粘贴，不显示也不保存；`npm run simulate -- --provider mock` 配合上面的模拟服务只测流程。结果写在 `sim-output/`，不进仓库
 - `npm run check-coder`：拿标准题的样例回答检查编码准不准，附拆解和不附拆解各编一遍（`tools/check-coder.mjs`）。默认用 DeepSeek，`-- --provider anthropic --model 模型名` 换 Claude，`-- --provider mock` 配合模拟服务只测流程。key 在终端里粘贴，结果写在 `sim-output/`
 - `npm run calibrate`：用模拟数据检查回避判定的门槛

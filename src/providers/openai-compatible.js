@@ -1,7 +1,7 @@
 // GPT、Gemini、DeepSeek、本地模型和其它 OpenAI 兼容服务：都走 /chat/completions。
 // 只发 Content-Type 和 Authorization 两个请求头：多发别的头，有的服务（比如 Gemini）会拒绝浏览器的跨域请求。
 
-import { LLMError } from "../errors.js";
+import { LLMError, redactSecrets } from "../errors.js";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // 一次请求最多等这么久（和 Claude 的 SDK 默认值一样）：写报告正文、本地模型都可能要几分钟，但不能无限等下去。
@@ -34,7 +34,7 @@ async function withRetry(fn) {
   }
 }
 
-async function errorFrom(res) {
+async function errorFrom(res, apiKey) {
   let message = "";
   try {
     const text = await res.text();
@@ -49,7 +49,7 @@ async function errorFrom(res) {
   }
   const s = res.status;
   const kind = s === 401 || s === 403 ? "auth" : s === 404 ? "not_found" : s === 429 ? "rate" : s >= 500 ? "server" : s === 400 || s === 422 ? "bad_request" : "unknown";
-  return new LLMError(kind, String(message || s).slice(0, 300), { status: s });
+  return new LLMError(kind, redactSecrets(String(message || s), apiKey).slice(0, 300), { status: s });
 }
 
 const withSchemaHint = (system, schema) => `${system}\n\n只输出 JSON。JSON Schema：${JSON.stringify(schema)}`;
@@ -77,7 +77,7 @@ export async function openaiCall({ baseURL, apiKey, model, system, user, schema,
     rest.messages = [{ role: "system", content: withSchemaHint(system, schema) }, body.messages[1]];
     res = await post(rest);
   }
-  if (!res.ok) throw await errorFrom(res);
+  if (!res.ok) throw await errorFrom(res, apiKey);
 
   let data;
   try {
@@ -96,7 +96,7 @@ export async function openaiCall({ baseURL, apiKey, model, system, user, schema,
 
 export async function openaiListModels({ baseURL, apiKey }) {
   const res = await send(`${baseURL}/models`, apiKey, { method: "GET" });
-  if (!res.ok) throw await errorFrom(res);
+  if (!res.ok) throw await errorFrom(res, apiKey);
   const data = await res.json();
   const ids = (data?.data ?? data?.models ?? [])
     .map((m) => String(m?.id ?? m?.name ?? "").replace(/^models\//, ""))

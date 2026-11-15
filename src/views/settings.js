@@ -1,16 +1,21 @@
 import { h, mount } from "../dom.js";
 import { t } from "../i18n.js";
-import { app, errorText, saveSettings, targetLabel } from "../app.js";
+import { app, confirmButton, errorText, saveSettings, targetLabel } from "../app.js";
 import { PROVIDERS, PROVIDER_ORDER, defaultAuditorModel, isCoveredModel, normalizeSettings, resolveTarget } from "../settings.js";
 import { callRole, listModels } from "../llm.js";
 import { SIZES, THEMES, loadDisplay, saveDisplay } from "../display.js";
+import { forgetSecrets } from "../store.js";
+
+// 重画设置页后要显示的一句话（比如"key 已经删掉了"）。
+let notice = "";
 
 export function renderSettings(view) {
   const draft = normalizeSettings(structuredClone(app.settings));
   const keys = { ...(app.secrets.keys ?? {}) };
   const models = {}; // 服务商 -> 拉到的模型列表
   const memo = { main: {}, auditor: {} }; // 服务商 -> 这一页里填过的模型和地址，来回切换时不丢
-  const savedMsg = h("p", { class: "ok", role: "status" });
+  const savedMsg = h("p", { class: "ok", role: "status" }, notice);
+  notice = "";
 
   const field = (label, control, hint) =>
     h("div", { class: "field" }, h("span", { class: "label" }, label), control, hint ? h("span", { class: "hint" }, hint) : null);
@@ -55,10 +60,14 @@ export function renderSettings(view) {
 
   function baseURLInput(pid, get, set) {
     if (!PROVIDERS[pid].editableBaseURL) return null;
-    return field(
-      t("settings.baseURL"),
-      h("input", { type: "url", spellcheck: "false", "aria-label": t("settings.baseURL"), value: get() || PROVIDERS[pid].baseURL, onInput: (e) => set(e.target.value.trim()) }),
-    );
+    return [
+      field(
+        t("settings.baseURL"),
+        h("input", { type: "url", spellcheck: "false", "aria-label": t("settings.baseURL"), value: get() || PROVIDERS[pid].baseURL, onInput: (e) => set(e.target.value.trim()) }),
+      ),
+      // "其它兼容服务"的地址会收到 key 和全部题目、回答；网上有叫人填"免费中转"地址的说法（安全审查第 2 条，修订记录第 18 轮）。
+      pid === "custom" ? h("p", { class: "warn" }, t("settings.baseURLWarning")) : null,
+    ];
   }
 
   // 模型输入框：可以直接填，也可以先拉列表再选。输入时只就地更新提示，不重画整页，免得丢焦点。
@@ -218,6 +227,14 @@ export function renderSettings(view) {
     out.replaceChildren(...lines);
   }
 
+  // 共用电脑上记住了 key，原来只能清空输入框再保存才去得掉（安全审查第 5 条）。
+  function forgetKeys() {
+    forgetSecrets();
+    app.secrets = { keys: {} };
+    notice = t("settings.forgotten");
+    renderSettings(view);
+  }
+
   function footer() {
     const testOut = h("div", { class: "test-results", role: "status" });
     return h(
@@ -235,11 +252,13 @@ export function renderSettings(view) {
         }),
         t("settings.remember"),
       ),
+      h("p", { class: "hint" }, t("settings.rememberHint")),
       h(
         "div",
         { class: "actions" },
         h("button", { type: "button", class: "primary", onClick: save }, t("common.save")),
         h("button", { type: "button", class: "ghost", onClick: () => test(testOut) }, t("settings.test")),
+        confirmButton(t("settings.forget"), t("settings.forgetConfirm"), forgetKeys, "ghost"),
       ),
       savedMsg,
       testOut,

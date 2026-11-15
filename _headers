@@ -1,0 +1,11 @@
+# 托管用的响应头（Cloudflare Pages、Netlify 都认这个文件；修订记录第 18 轮，安全审查第 1 条）。
+# 本地运行和 GitHub Pages 不读它，那时只有 index.html 里 meta 的 CSP 起作用。
+# CSP 和 index.html 里的一致，只多一条 frame-ancestors（meta 里写了也不生效）：不许别的网站把页面嵌进去。
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https: http://localhost:* http://127.0.0.1:*; base-uri 'none'; form-action 'none'; object-src 'none'; require-trusted-types-for 'script'; trusted-types 'none'; frame-ancestors 'none'
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Cross-Origin-Opener-Policy: same-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Strict-Transport-Security: max-age=31536000
