@@ -131,8 +131,8 @@ Half-Light Choices, Second Thoughts · 半明半暗里的选择与转念
 
 GitHub 简介（About）：
 
-- 中文：十来组小难题，每组挑一道来答，最后拿到一份关于你怎样做判断的描述，写明依据，也写明哪里可能看错。自带 API key，记录只存在你的浏览器里。
-- English: About a dozen small dilemmas. Pick one per round, then get an evidence-backed description of how you make judgment calls, including where it might be wrong. Bring your own API key; everything stays in your browser.
+- 中文：十来组跟生活有关的小难题，每组挑一道来答，最后拿到一份关于你怎样做判断的描述：有依据，也写明哪里可能看错。自带 API key，记录只存在你的浏览器里。
+- English: About a dozen small everyday dilemmas. Pick one in each group, then get a description of how you make judgment calls, with the evidence behind it and where it might be wrong. Bring your own API key; everything stays in your browser.
 
 （2026-10-30：披露之前的地方都不再提"信息不全"，题目里留信息缺口这件事，在报告的披露部分说明。）
 

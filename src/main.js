@@ -18,6 +18,9 @@ import { renderHistory } from "./views/history.js";
 import { renderNotes } from "./views/notes.js";
 import { renderHow } from "./views/how.js";
 
+// 源码地址：代码按 AGPL 授权，网站上要让用的人能拿到源码（修订记录第 21 轮，仓库公开以后才加）。
+const REPO_URL = "https://github.com/20dice-0023/HL-CST";
+
 const ROUTES = {
   "": renderHome,
   settings: renderSettings,
@@ -46,7 +49,7 @@ function shell() {
       h("nav", {}, h("a", { href: "#/" }, t("nav.home")), h("a", { href: "#/history" }, t("nav.history")), h("a", { href: "#/settings" }, t("nav.settings"))),
     ),
     view,
-    h("footer", { class: "site" }, t("app.footer")),
+    h("footer", { class: "site" }, t("app.footer"), " · ", h("a", { href: REPO_URL, target: "_blank", rel: "noopener noreferrer" }, t("app.source"))),
   );
   return view;
 }

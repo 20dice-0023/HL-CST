@@ -10,6 +10,7 @@ Half-Light Choices, Second Thoughts · 半明半暗里的选择与转念
 
 ## 怎么开始
 
+- **在线使用**：https://alexz.hl-cst.workers.dev （托管在 Cloudflare 上，有的地区可能打不开；打不开的话可以下载仓库，在本地运行）
 - **本地运行**：下载仓库，在根目录运行 `node tools/serve.mjs`（没装 Node 的话用 `python -m http.server 8000 --bind 127.0.0.1`；它会列出目录内容，也不检查 Host，目录里放着不公开的材料时别用），再打开 http://localhost:8000 。直接双击 `index.html` 打不开，因为浏览器不允许网页读取本地文件。
 - **试玩**：首页点"试玩"。不需要 key，用的是预置的示例题，报告由内置规则生成。
 - **正式做**：在"设置"里选服务商、填 key、选模型。报告要做满 3 轮、一共答满 24 组才能看（每轮十来组），之前做的都会存着。

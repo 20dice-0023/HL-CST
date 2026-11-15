@@ -2,7 +2,8 @@
   "app": {
     "title": "HL-CST",
     "subtitle": "Half-Light Choices, Second Thoughts · 半明半暗里的选择与转念",
-    "footer": "记录只存在这台设备的浏览器里 · 开源项目：代码 AGPL-3.0，内容 CC BY-SA 4.0"
+    "footer": "记录只存在这台设备的浏览器里 · 开源项目：代码 AGPL-3.0，内容 CC BY-SA 4.0",
+    "source": "源码在 GitHub 上"
   },
   "nav": { "home": "首页", "settings": "设置", "history": "我的记录" },
   "contact": {
