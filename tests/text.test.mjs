@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { extractJSON, fill, splitPrompt, visibleLength } from "../src/text.js";
+import { chineseQuotes, extractJSON, fill, splitPrompt, visibleLength } from "../src/text.js";
 
 test("extractJSON handles plain, fenced and wrapped output", () => {
   assert.deepEqual(extractJSON('{"a": 1}'), { a: 1 });
@@ -23,4 +23,9 @@ test("splitPrompt needs exactly one ===USER=== line", () => {
 
 test("visibleLength ignores spaces and punctuation", () => {
   assert.equal(visibleLength("你好，世界！ ab 12"), 8);
+});
+
+test("English double quotes in questions become Chinese ones, opening and closing in turn", () => {
+  assert.equal(chineseQuotes('同学说"就记两小时吧"，又补了一句"拜托"。'), "同学说“就记两小时吧”，又补了一句“拜托”。");
+  assert.equal(chineseQuotes("已经是“中文”的不动"), "已经是“中文”的不动");
 });

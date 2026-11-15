@@ -41,3 +41,16 @@ export function visibleLength(s) {
 export function containsAny(s, words) {
   return words.filter((w) => s.includes(w));
 }
+
+/**
+ * 英文双引号换成中文的“”：按出现顺序一开一合（修订记录第 20 轮：题目里的双引号一律用中文的）。
+ * 模型写的题目和追问用它兜底；已经是中文引号的不动。
+ */
+export function chineseQuotes(text) {
+  let open = true;
+  return String(text).replace(/"/g, () => {
+    const q = open ? "“" : "”";
+    open = !open;
+    return q;
+  });
+}

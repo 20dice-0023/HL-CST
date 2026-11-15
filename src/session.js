@@ -4,7 +4,7 @@
 import { planRounds } from "./scheduler.js";
 import { mulberry32, randomSeed } from "./rng.js";
 import { callRole } from "./llm.js";
-import { containsAny, visibleLength } from "./text.js";
+import { chineseQuotes, containsAny, visibleLength } from "./text.js";
 import { auditorSameProvider, resolveTarget } from "./settings.js";
 import { DEFAULT_STAGE, packageText, rankExamples, stageInfo } from "./life-stage.js";
 import { SCHEMAS } from "./schemas.js";
@@ -197,7 +197,7 @@ async function writeQuestions(ctx, specs, previousTexts, notes, stage) {
     model = res.model;
     for (const q of res.data.questions ?? []) {
       if (!missing.some((m) => m.slot === q.slot) || typeof q.text !== "string" || !q.text.trim()) continue;
-      out[q.slot] = q.text.trim();
+      out[q.slot] = chineseQuotes(q.text.trim()); // 题目里的双引号一律用中文的（修订记录第 20 轮）
       if (ctx.demo && q.carrier) carriers[q.slot] = q.carrier;
     }
   }
@@ -445,7 +445,7 @@ export async function makeProbe(ctx, round) {
   const q = chosenQuestion(round);
   const missing = round.coding1?.missing_info?.length ? round.coding1.missing_info.join("、") : "（受试者没有具体说）";
   const res = await callRole(ctx, "probe", { question: q.text, answer: round.answer, missing }, { missing });
-  return res.data.text.trim() || null; // 没写出追问就不问
+  return chineseQuotes(res.data.text.trim()) || null; // 没写出追问就不问；引号换成中文的
 }
 
 export function recordProbe(session, round, { prompt, response = "", declined = false, keptDeferring = false }) {

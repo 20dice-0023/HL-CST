@@ -126,3 +126,9 @@ test("coding a standard question sends its card; an ordinary question does not",
     globalThis.fetch = realFetch;
   }
 });
+
+test("questions, examples and cards use Chinese double quotes only", () => {
+  const strings = (o) => (typeof o === "string" ? [o] : Array.isArray(o) ? o.flatMap(strings) : o && typeof o === "object" ? Object.values(o).flatMap(strings) : []);
+  const offenders = [...strings(read("axes.json")), ...strings(read("standard.json"))].filter((s) => s.includes('"'));
+  assert.deepEqual(offenders.map((s) => s.slice(0, 20)), []);
+});
