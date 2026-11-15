@@ -62,6 +62,7 @@ key 和全部记录只存在你的浏览器里；请求从浏览器直接发给�
 - `design/`：设计稿
 - `archive/`：项目早期的原始文件，只放原文件，不转格式
 - `tests/`、`tools/`：测试和开发脚本
+- `wrangler.jsonc`、`.assetsignore`、`_headers`：部署到 Cloudflare 用的配置、不上传的文件、响应头
 
 ## 开发
 

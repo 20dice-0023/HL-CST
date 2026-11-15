@@ -1,0 +1,13 @@
+// Cloudflare Workers 的部署配置（修订记录第 19 轮，仓库与发布第 5 节）。
+// 推到 main 以后，Cloudflare 按这份配置把网站部署出去。原来仓库里没有这份文件，Cloudflare 每次构建都临时自动生成一份。
+// 网站是纯静态的：没有 Worker 脚本，只有静态文件；哪些文件不上传，见 .assetsignore；响应头见 _headers。
+{
+  "name": "hl-cst",
+  "compatibility_date": "2026-11-13",
+  "assets": {
+    "directory": "."
+  },
+  // 只留一个固定网址，不给每个版本开预览网址：网址不同就是不同的源，key 和记录存不到一起。
+  "workers_dev": true,
+  "preview_urls": false
+}

@@ -54,4 +54,6 @@
 
 如果一定要用 GitHub Pages：在 GitHub 上单独建一个组织，只放这一个站，用组织的主页（`组织名.github.io`），这样是单独的源；但仓库要公开，响应头也加不了。
 
-注意：网站一上线，部署的那个目录里的文件（`.git` 除外）通过网址都能取到，包括 `design/`、`archive/`。仓库还私有的时候，这等于把这些文件半公开了。
+**现在的部署**（修订记录第 19 轮）：Cloudflare Workers，只放静态文件，连着 GitHub 仓库，推到 `main` 就自动部署。`wrangler.jsonc` 是部署配置；`.assetsignore` 列出不上传的文件：修订记录、`tests/`、`tools/`、`archive/`、README、`package.json` 这些。网站上只有网站要用的文件：`index.html`、`src/`、`content/`、`vendor/`、`design/` 里的四份说明和两份许可（`tests/deploy.test.mjs` 会查）。不加 `.assetsignore` 的话，整个仓库都会被传上去，通过网址都能取到。
+
+`workers.dev` 的网址在大陆据说长期受干扰，很多地方打不开；要给大陆的中学生用，最好绑自己的域名，再找大陆的网络实测。

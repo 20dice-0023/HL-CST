@@ -1,0 +1,19 @@
+# 不上传到网站的文件（修订记录第 19 轮）。写法和 .gitignore 一样。
+# 网站只需要 index.html、src/、content/、vendor/、design/ 里的四份说明和两份许可；
+# 别的都放在仓库里，想看的人去仓库看。_headers 和这份文件本身，Cloudflare 会自己处理，不会当成网页公开。
+.git
+.gitignore
+.gitattributes
+.claude/
+.wrangler/
+node_modules
+sim-output/
+wrangler.jsonc
+package.json
+package-lock.json
+README.md
+README.en.md
+archive/
+tests/
+tools/
+design/changelog.md
