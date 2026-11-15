@@ -1,0 +1,9 @@
+# 文本文件在仓库里和检出后都用 LF。Windows 上的 git 默认（core.autocrlf=true）会在检出时换成 CRLF。
+* text=auto eol=lf
+
+# 二进制文件原样保存。archive/ 里有几份 PDF 会被 git 误判成文本，换行一改就打不开了。
+*.pdf binary
+*.doc binary
+*.docx binary
+*.png binary
+*.ico binary
